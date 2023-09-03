@@ -4,11 +4,12 @@ Copyright © 2023 Aronya Baksy abaksy@gmail.com
 package cmd
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/spf13/cobra"
 
-	utils "github.com/abaksy/gotaskmgr/utils"
+	constants "github.com/abaksy/gotaskmgr/const"
+	db "github.com/abaksy/gotaskmgr/db"
 )
 
 // listCmd represents the list command
@@ -19,9 +20,9 @@ var listCmd = &cobra.Command{
 	unique IDs. This ID can be used with the do command to
 	complete a task.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		err := utils.ListTasks()
+		err := db.ListTasks(constants.IN_PROGRESS)
 		if err != nil {
-			log.Default().Fatalf("error while listing tasks: %s", err)
+			fmt.Printf("error while listing tasks: %s\n", err)
 		}
 	},
 }

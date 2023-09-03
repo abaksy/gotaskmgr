@@ -11,27 +11,26 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// doCmd represents the do command
-var doCmd = &cobra.Command{
-	Use:   "do tasknumber",
-	Short: "Complete a task",
-	Long: `Mark the task number supplied as completed in the database
-	Post this the task will no longer be available in the task list`,
+// rmCmd represents the rm command
+var rmCmd = &cobra.Command{
+	Use:   "rm",
+	Short: "Remove task",
+	Long: `Remove a task from the database
+	After this, the task will not be listed, and cannot be marked as complete`,
 	Run: func(cmd *cobra.Command, args []string) {
 		taskID, err := strconv.ParseUint(args[0], 10, 64)
 		if err != nil {
 			fmt.Println("error running task do: could not parse task ID")
 		}
-		err = db.DoTask(taskID)
+		err = db.RemoveTask(taskID)
 		if err != nil {
-			fmt.Printf("failed to complete task: %s\n", err)
+			fmt.Printf("failed to remove task: %s\n", err)
 		} else {
-			fmt.Println("completed task!")
+			fmt.Printf("deleted task")
 		}
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(doCmd)
-
+	rootCmd.AddCommand(rmCmd)
 }

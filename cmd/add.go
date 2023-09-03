@@ -5,14 +5,13 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
 
 	constants "github.com/abaksy/gotaskmgr/const"
-	utils "github.com/abaksy/gotaskmgr/utils"
+	db "github.com/abaksy/gotaskmgr/db"
 )
 
 // addCmd represents the add command
@@ -25,13 +24,14 @@ var addCmd = &cobra.Command{
 		taskName := strings.Join(args, constants.SPACE)
 		creationDate := time.Now()
 
-		task := utils.Task{Name: taskName, CreationDate: creationDate}
+		task := db.Task{Name: taskName, CreationDate: creationDate, CompletionStatus: constants.IN_PROGRESS}
 
-		err := utils.AddTask(task)
+		err := db.AddTask(task)
 		if err != nil {
-			log.Default().Fatalf("Error running task add: %s", err)
+			fmt.Printf("error running task add: %s\n", err)
+		} else {
+			fmt.Println("Added task!")
 		}
-		fmt.Println("Added task!")
 	},
 }
 
