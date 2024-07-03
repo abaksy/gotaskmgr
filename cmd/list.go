@@ -15,8 +15,8 @@ import (
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "A brief description of your command",
-	Long: `List the tasks still pending along with their 
+	Short: "List tasks in in-progress state",
+	Long: `List the tasks still in progress along with their 
 	unique IDs. This ID can be used with the do command to
 	complete a task.`,
 	Run: func(cmd *cobra.Command, args []string) {

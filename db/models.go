@@ -6,7 +6,7 @@ package db
 import "time"
 
 type Task struct {
-	ID               uint64    `json:"id" storm:"increment"`
+	ID               uint64    `json:"id" storm:"id,increment"`
 	Name             string    `json:"taskName"`
 	CreationDate     time.Time `json:"creationDate"`
 	CompletionDate   time.Time `json:"completionDate"`

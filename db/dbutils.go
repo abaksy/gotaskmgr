@@ -60,7 +60,7 @@ func AddTask(task Task) error {
 	return db.Save(&task)
 }
 
-// List tasks present in bucket
+// List tasks present in the BoltDB bucket based on the filter (task status)
 func ListTasks(filter int) error {
 	dbFilePath := GetDBFilePath()
 	db, err := storm.Open(dbFilePath)
@@ -75,15 +75,15 @@ func ListTasks(filter int) error {
 		return err
 	}
 
-	for idx, task := range tasks {
+	for _, task := range tasks {
 		if task.CompletionStatus == filter {
-			fmt.Printf("%v. %v\n", idx, task.Name)
+			fmt.Printf("%v. %v\n", task.ID, task.Name)
 		}
 	}
 	return nil
 }
 
-// // Complete a task
+// Mark a task as completed in the BoltDB bucket
 func DoTask(taskID uint64) error {
 	dbFilePath := GetDBFilePath()
 	db, err := storm.Open(dbFilePath)
@@ -95,6 +95,7 @@ func DoTask(taskID uint64) error {
 	return db.Update(&Task{ID: taskID, CompletionStatus: constants.COMPLETE, CompletionDate: time.Now()})
 }
 
+// Remove a task from the BoltDB Bucket
 func RemoveTask(taskID uint64) error {
 	dbFilePath := GetDBFilePath()
 	db, err := storm.Open(dbFilePath)
@@ -104,7 +105,7 @@ func RemoveTask(taskID uint64) error {
 	defer db.Close()
 
 	var task Task
-	err = db.One("id", taskID, &task)
+	err = db.One("ID", taskID, &task)
 	if err != nil {
 		return err
 	}
